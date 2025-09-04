@@ -6,23 +6,26 @@ import pandas as pd
 import dash_bootstrap_components as dbc
 import plotly.io as pio
 
-# --- CORREÇÃO FINAL: Usar o tema escuro padrão 'plotly_dark' ---
+# --- TEMA DOS GRÁFICOS ---
 pio.templates.default = "plotly_dark"
-# ----------------------------------------------------------------
 
-# --- 1. Carregar e Preparar os Dados ---
+# --- 1. Carregar os Dados ---
+# No Render, o script e o CSV estão na mesma pasta raiz, então esta é a forma correta.
 try:
     df = pd.read_csv('dados_consolidados.csv')
     df['Data'] = pd.to_datetime(df['Data'])
 except FileNotFoundError:
-    print("ERRO: O arquivo 'dados_consolidados.csv' não foi encontrado.")
-    print("Por favor, crie o arquivo usando o código de preparação de dados.")
+    # Esta mensagem de erro agora aparecerá nos logs do Render se o arquivo não for encontrado.
+    print("ERRO CRÍTICO: O arquivo 'dados_consolidados.csv' não foi encontrado.")
+    print("Verifique se o arquivo 'dados_consolidados.csv' foi enviado para o GitHub.")
     exit()
 
 # --- 2. Inicializar o App Dash ---
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.VAPOR],
                 meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1.0'}])
 app.title = 'Dashboard de Produção Industrial'
+# Adicionado para o Gunicorn (servidor do Render)
+server = app.server
 
 # --- 3. Layout do Dashboard ---
 app.layout = dbc.Container([
@@ -166,3 +169,4 @@ def update_dashboard(start_date, end_date, selected_fabricas, selected_equipes):
 # --- 5. Rodar o Servidor Local ---
 if __name__ == '__main__':
     app.run(debug=True)
+    
