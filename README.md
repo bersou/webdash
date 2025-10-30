@@ -1,4 +1,4 @@
-# 📊 Dashboard de Análise de Produção Industrial
+# 📊 WebDash de Análise de Produção Industrial
 
 Este projeto consiste em um dashboard web interativo para a análise de dados de produção de uma indústria automotiva. A aplicação foi construída inteiramente em Python, utilizando o framework Dash.
 
